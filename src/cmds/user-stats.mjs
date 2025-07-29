@@ -3,7 +3,7 @@ import { AttachmentBuilder } from "discord.js";
 
 async function svgToPng(url, name) {
   const res = await fetch(url);
-  if (!res.ok()) { return }
+  if (res.statusText !== "OK") { return }
   const svg = await res.text();
   const png = await svg2png({
     input: svg,
@@ -32,11 +32,12 @@ export const command = {
   ],
 
   async run(bot, interaction, args) {
+    interaction.deferReply();
     const username = args.getString("username");
     if (!username) { return interaction.reply(`Error: username shouldn't be empty.`); }
 
     const thumbnail = await fetch(`https://github.com/${username}.png`);
-    if (!thumbnail.ok()) { return interaction.reply("Error: user doesn't exist"); }
+    if (thumbnail.statusText !== "OK") { return interaction.reply(`Fetch Error: user '${username}' doesn't exist`); }
 
     const stats = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=radical`, 'stats');
     const lang_a = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=radical`, 'lang_a');
@@ -60,7 +61,7 @@ export const command = {
       },
     };
 
-    await interaction.reply({ embeds: [Embed] });
+    await interaction.editReply({ embeds: [Embed] });
     await interaction.channel.send({ files: [graph] });
     await interaction.channel.send({ files: [stats] });
     await interaction.channel.send({ files: [lang_a] });
