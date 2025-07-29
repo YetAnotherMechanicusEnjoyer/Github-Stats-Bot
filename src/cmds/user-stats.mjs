@@ -28,21 +28,33 @@ export const command = {
       description: "Username of the targeted user",
       autocomplete: false,
       required: true
+    },
+    {
+      type: "string",
+      name: "theme",
+      description: "Cards theme",
+      autocomplete: true,
+      required: false
     }
   ],
 
   async run(bot, interaction, args) {
     interaction.deferReply();
+
     const username = args.getString("username");
-    if (!username) { return interaction.reply(`Error: username shouldn't be empty.`); }
+    if (!username) { return interaction.editReply(`Error: username shouldn't be empty.`); }
+
+    let theme = args.getString("theme");
+    if (!theme) { theme = "discord_old_blurple"; }
+    if (!bot.themes.get(theme)) { return interaction.editReply(`Error: theme ${theme} does not exists.`); }
 
     const thumbnail = await fetch(`https://github.com/${username}.png`);
-    if (thumbnail.statusText !== "OK") { return interaction.reply(`Fetch Error: user '${username}' doesn't exist`); }
+    if (thumbnail.statusText !== "OK") { return interaction.editReply(`Fetch Error: user '${username}' doesn't exist`); }
 
-    const stats = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=radical`, 'stats');
-    const lang_a = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=radical`, 'lang_a');
-    const lang_b = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=radical`, 'lang_b');
-    const graph = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=radical`, 'lang_b');
+    const stats = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=${theme}`, 'stats');
+    const lang_a = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=${theme}`, 'lang_a');
+    const lang_b = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=${theme}`, 'lang_b');
+    const graph = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=${theme}`, 'lang_b');
 
     let Embed = {
       color: bot.color,
