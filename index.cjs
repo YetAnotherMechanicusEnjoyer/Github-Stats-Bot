@@ -7,7 +7,7 @@ require('dotenv').config();
 
 bot.commands = new Discord.Collection();
 bot.profiles = new Discord.Collection();
-bot.color = "#1EC1E6";
+bot.color = 0x1ec1e6;
 bot.login(process.env.TOKEN);
 
 loadCommands(bot);
