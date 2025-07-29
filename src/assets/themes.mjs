@@ -8,7 +8,7 @@ export const themes = [
   "bear",
   "blue_green",
   "blueberry",
-  "buefly",
+  "buefy",
   "calm",
   "chartreuse_dark",
   "city_lights",
