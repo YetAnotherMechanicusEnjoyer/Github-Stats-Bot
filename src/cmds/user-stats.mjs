@@ -39,7 +39,7 @@ export const command = {
   ],
 
   async run(bot, interaction, args) {
-    interaction.deferReply();
+    await interaction.deferReply();
 
     const username = args.getString("username");
     if (!username) { return interaction.editReply(`Error: username shouldn't be empty.`); }
@@ -58,25 +58,23 @@ export const command = {
 
     let Embed = {
       color: bot.color,
-      title: `${username}'s Github Stats`,
+      title: `\_\_${username}\_\_'s Github Stats`,
       author: {
         name: interaction.member.user.username,
         iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }),
       },
+      description: `\*\*Theme:\*\* \`${theme}\``,
       thumbnail: {
         url: `https://github.com/${username}.png`,
       },
       timestamp: new Date().toISOString(),
       footer: {
-        text: `/user-stats ${username}`,
+        text: `/user-stats username:${username} theme:${theme}`,
         iconURL: bot.user.displayAvatarURL({ dynamic: true }),
       },
     };
 
     await interaction.editReply({ embeds: [Embed] });
-    await interaction.channel.send({ files: [graph] });
-    await interaction.channel.send({ files: [stats] });
-    await interaction.channel.send({ files: [lang_a] });
-    await interaction.channel.send({ files: [lang_b] });
+    await interaction.followUp({ files: [graph, stats, lang_a, lang_b] });
   }
 }
