@@ -12,7 +12,9 @@ async function svgToPng(url, name) {
     quality: 1,
   })
 
-  return new AttachmentBuilder(png, `${name}.png`);
+  return new AttachmentBuilder(png)
+    .setName(`${name}.png`)
+    .setDescription(`${name}`);
 }
 
 export const command = {
@@ -52,9 +54,9 @@ export const command = {
     if (thumbnail.statusText !== "OK") { return interaction.editReply(`Fetch Error: user '${username}' doesn't exist`); }
 
     const stats = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/stats?username=${username}&theme=${theme}`, 'stats');
-    const lang_a = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=${theme}`, 'lang_a');
-    const lang_b = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=${theme}`, 'lang_b');
-    const graph = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=${theme}`, 'lang_b');
+    const lang_a = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=${username}&theme=${theme}`, 'most-commit-language');
+    const lang_b = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${username}&theme=${theme}`, 'repos-per-language');
+    const graph = await svgToPng(`http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=${username}&theme=${theme}`, 'profile-details');
 
     let Embed = {
       color: bot.color,
