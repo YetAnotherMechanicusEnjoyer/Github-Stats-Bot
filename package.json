@@ -1,0 +1,17 @@
+{
+  "name": "github-stats-bot",
+  "version": "1.0.0",
+  "main": "index.cjs",
+  "scripts": {
+    "start": "nodemon index.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.1",
+    "nodemon": "^3.1.10"
+  }
+}
