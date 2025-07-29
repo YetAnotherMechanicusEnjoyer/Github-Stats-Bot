@@ -1,6 +1,6 @@
 export const command = {
   name: "ping",
-  description: "Affiche la latence",
+  description: "Displays latency",
   permission: "None",
   context: "None",
   category: "Utils",
