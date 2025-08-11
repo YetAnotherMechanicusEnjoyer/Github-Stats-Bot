@@ -7,8 +7,11 @@ module.exports = async (bot, message) => {
 
   if (!message.content.startsWith(prefix)) return;
 
-  let command = require(`../cmds/${commandName}`);
-  if (!command) return message.reply("Error: No such command.");
-
-  command.run(bot, message, args);
+  let mod;
+  try {
+    mod = require(`../cmds/${commandName}.mjs`);
+    mod.command.run(bot, message, args);
+  } catch {
+    message.reply(`Error: \"${commandName}\" No such command.`);
+  }
 }
