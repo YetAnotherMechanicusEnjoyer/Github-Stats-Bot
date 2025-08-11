@@ -12,7 +12,7 @@ export const command = {
     let themes_str = "";
 
     bot.themes.forEach(theme => {
-      themes_str += "\n" + theme;
+      themes_str += `\n\`${theme}\``;
     });
 
     let Embed = {
