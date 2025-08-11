@@ -8,7 +8,7 @@ module.exports = async (bot, interaction) => {
     if (interaction.commandName === "help") {
       const choices = bot.commands.filter(cmd => cmd.name.includes(entry));
       const limitedChoices = entry === "" ? bot.commands.map(cmd => ({ name: cmd.name, value: cmd.name })).slice(0, 25) : choices.map(choice => ({ name: choice.name, value: choice.name })).slice(0, 25);
-      await interaction.respond(limitedChoices);
+      await interaction.respond(limitedChoices.slice(0, 25));
     }
 
     if (interaction.commandName === "user-stats") {
@@ -35,6 +35,10 @@ module.exports = async (bot, interaction) => {
   if (interaction.type === Discord.InteractionType.ApplicationCommand) {
     let mod = require(`../cmds/${interaction.commandName}.mjs`);
     let command = mod.command;
-    command.run(bot, interaction, interaction.options);
+    try {
+      command.run(bot, interaction, interaction.options);
+    } catch {
+      interaction.reply(`Error: ${command.name}`);
+    }
   }
 }
