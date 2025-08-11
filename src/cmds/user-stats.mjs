@@ -1,5 +1,5 @@
 import { svg2png } from "svg-png-converter";
-import { AttachmentBuilder } from "discord.js";
+import { AttachmentBuilder, InteractionContextType } from "discord.js";
 
 async function svgToPng(url, name) {
   const res = await fetch(url);
@@ -21,7 +21,7 @@ export const command = {
   name: "user-stats",
   description: "Displays a specific user's stats.",
   permission: "None",
-  context: "None",
+  context: InteractionContextType.Guild,
   category: "Github Stats",
   options: [
     {
